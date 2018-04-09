@@ -24,7 +24,7 @@ public class ReadStudentDemo {
 			
 			// create a student object
 			System.out.println("Creating a new student object...");
-			Student tempStudent = new Student("Daffy", "Duck", "daffy@sergio.com");
+			Student tempStudent = new Student("Daffy", "Duck", "daffy@sergio.com", null);
 			
 			// start a transaction
 			session.beginTransaction();
