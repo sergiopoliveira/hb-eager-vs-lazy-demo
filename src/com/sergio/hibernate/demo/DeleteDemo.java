@@ -4,47 +4,51 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.sergio.hibernate.demo.entity.Student;
+import com.sergio.hibernate.demo.entity.Instructor;
+import com.sergio.hibernate.demo.entity.InstructorDetail;
 
-public class PrimaryKeyDemo {
+public class DeleteDemo {
 
 	public static void main(String[] args) {
+		
 		// create session factory
 		SessionFactory factory = new Configuration()
 								 .configure("hibernate.cfg.xml")
-								 .addAnnotatedClass(Student.class)
+								 .addAnnotatedClass(Instructor.class)
+								 .addAnnotatedClass(InstructorDetail.class)
 								 .buildSessionFactory();
 		
 		// create session
 		Session session = factory.getCurrentSession();
-
+		
 		// use the session object to save Java object
 		try {
 			
-			// create 3 student objects;
-			System.out.println("Creating 3 student objects...");
-			Student tempStudent1 = new Student("John", "doe", "john@doe.com", null);
-			Student tempStudent2 = new Student("Mary", "Public", "mary@public.com", null);
-			Student tempStudent3 = new Student("Bonita", "Applebum", "bonita@applebum.com", null);
-			
 			// start a transaction
 			session.beginTransaction();
+		
+			// get instructor by primary key / id
+			int theId = 1;
+			Instructor tempInstructor = 
+					session.get(Instructor.class, 1); //returns null if not found
 			
-			// save the student object
-			System.out.println("Saving the student...");
-			session.save(tempStudent1);
-			session.save(tempStudent2);
-			session.save(tempStudent3);
+			System.out.println(tempInstructor);
 			
+			//delete the instructors
+			if(tempInstructor!=null) {
+			
+				//NOTE: will also delete the delete table because of CASCADE
+				session.delete(tempInstructor);
+			
+			}
 			// commit transaction
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");
-		}
+		} 
 		finally {
 			factory.close();
 		}
-
 	}
 
 }
